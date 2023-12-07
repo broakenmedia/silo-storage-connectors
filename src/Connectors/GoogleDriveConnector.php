@@ -16,8 +16,8 @@ use Silo\StorageConnectors\DTO\StorageResponse;
 
 class GoogleDriveConnector implements StorageConnectorInterface
 {
-
     private Client $client;
+
     private Drive $service;
 
     private static array $mimeTypeMap = [
@@ -63,14 +63,15 @@ class GoogleDriveConnector implements StorageConnectorInterface
     {
         $files = $this->service->files->listFiles([
             'fields' => 'files(id, kind), nextPageToken',
-            'pageSize' => (string)$pageSize,
-            'pageToken' => $pageId
+            'pageSize' => (string) $pageSize,
+            'pageToken' => $pageId,
         ]);
 
         $response = collect();
         foreach ($files->getFiles() as $file) {
             $response->push($this->get($file->getId(), $includeFileContent));
         }
+
         return $response;
     }
 

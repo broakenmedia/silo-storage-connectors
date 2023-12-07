@@ -3,7 +3,6 @@
 namespace Silo\StorageConnectors\Commands;
 
 use Illuminate\Console\Command;
-use Silo\StorageConnectors\Factories\StorageConnectorFactory;
 
 class StorageConnectorsCommand extends Command
 {
