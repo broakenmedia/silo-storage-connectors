@@ -1,24 +1,26 @@
 {
-    "name": ":vendor_slug/:package_slug",
-    "description": ":package_description",
+    "name": "jscott-rawnet/silo-storage-connectors",
+    "description": "Transparently access different storage providers with a unified interface.",
     "keywords": [
-        ":vendor_name",
+        "Joe Scott",
         "laravel",
-        ":package_slug"
+        "silo-storage-connectors"
     ],
-    "homepage": "https://github.com/:vendor_slug/:package_slug",
+    "homepage": "https://github.com/jscott-rawnet/silo-storage-connectors",
     "license": "MIT",
     "authors": [
         {
-            "name": ":author_name",
-            "email": "author@domain.com",
+            "name": "Joe Scott",
+            "email": "jscott@rawnet.com",
             "role": "Developer"
         }
     ],
     "require": {
         "php": "^8.1",
-        "spatie/laravel-package-tools": "^1.14.0",
-        "illuminate/contracts": "^10.0"
+        "google/apiclient": "^v2.15.0",
+        "guzzlehttp/guzzle": "^7.8",
+        "illuminate/contracts": "^10.0",
+        "spatie/laravel-package-tools": "^1.14.0"
     },
     "require-dev": {
         "laravel/pint": "^1.0",
@@ -30,24 +32,26 @@
         "pestphp/pest-plugin-laravel": "^2.0",
         "phpstan/extension-installer": "^1.1",
         "phpstan/phpstan-deprecation-rules": "^1.0",
-        "phpstan/phpstan-phpunit": "^1.0",
-        "spatie/laravel-ray": "^1.26"
+        "phpstan/phpstan-phpunit": "^1.0"
     },
     "autoload": {
         "psr-4": {
-            "VendorName\\Skeleton\\": "src/",
-            "VendorName\\Skeleton\\Database\\Factories\\": "database/factories/"
+            "Silo\\StorageConnectors\\": "src/",
+            "Silo\\StorageConnectors\\Database\\Factories\\": "database/factories/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "VendorName\\Skeleton\\Tests\\": "tests/",
+            "Silo\\StorageConnectors\\Tests\\": "tests/",
             "Workbench\\App\\": "workbench/app/"
         }
     },
     "scripts": {
-        "post-autoload-dump": "@composer run prepare",
-        "clear": "@php vendor/bin/testbench package:purge-skeleton --ansi",
+        "post-autoload-dump": [
+            "@composer run prepare",
+            "Google\\Task\\Composer::cleanup"
+        ],
+        "clear": "@php vendor/bin/testbench package:purge-silo-storage-connectors --ansi",
         "prepare": "@php vendor/bin/testbench package:discover --ansi",
         "build": [
             "@composer run prepare",
@@ -73,12 +77,15 @@
     "extra": {
         "laravel": {
             "providers": [
-                "VendorName\\Skeleton\\SkeletonServiceProvider"
+                "Silo\\StorageConnectors\\StorageConnectorsServiceProvider"
             ],
             "aliases": {
-                "Skeleton": "VendorName\\Skeleton\\Facades\\Skeleton"
+                "StorageConnectors": "Silo\\StorageConnectors\\Facades\\StorageConnectors"
             }
-        }
+        },
+        "google/apiclient-services": [
+            "Drive"
+        ]
     },
     "minimum-stability": "dev",
     "prefer-stable": true
