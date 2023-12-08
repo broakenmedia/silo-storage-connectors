@@ -7,7 +7,7 @@ use Silo\StorageConnectors\DTO\StorageResponse;
 
 interface StorageConnectorInterface
 {
-    public function get(string $fileId, bool $includeFileContent = false): StorageResponse;
+    public function get(string $resourceId, bool $includeFileContent = false): StorageResponse;
 
-    public function list(?string $pageId = null, int $pageSize = 20, bool $includeFileContent = false): Collection;
+    public function list(?string $pageId = null, int $pageSize = 20, bool $includeFileContent = false, array $extraArgs = []): Collection;
 }

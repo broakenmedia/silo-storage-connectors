@@ -2,28 +2,29 @@
 
 namespace Silo\StorageConnectors\Exceptions;
 
+use Silo\StorageConnectors\Enums\SiloConnector;
 use Throwable;
 
 class StorageException extends \Exception
 {
-    protected string $providerType;
+    protected ?SiloConnector $connectorType;
 
     /**
      * Constructor for StorageException.
      *
      * @param string $message The Exception message.
-     * @param string $providerType The type of storage provider related to the exception.
+     * @param ?SiloConnector $connectorType The type of storage connector related to the exception.
      * @param int $code The Exception code.
      * @param Throwable|null $previous The previous throwable used for exception chaining.
      */
-    public function __construct(string $message, string $providerType = '', int $code = 0, Throwable $previous = null)
+    public function __construct(string $message, ?SiloConnector $connectorType = null, int $code = 0, Throwable $previous = null)
     {
+        $this->connectorType = $connectorType;
         parent::__construct($message, $code, $previous);
-        $this->providerType = $providerType;
     }
 
-    public function getProviderType(): string
+    public function getConnectorType(): SiloConnector
     {
-        return $this->providerType;
+        return $this->connectorType;
     }
 }

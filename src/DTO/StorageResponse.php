@@ -26,7 +26,7 @@ class StorageResponse
         return $this->nativeResponseObject;
     }
 
-    public function contentStream(): StreamInterface
+    public function contentStream(): ?StreamInterface
     {
         return $this->contentStream;
     }

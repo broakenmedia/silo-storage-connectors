@@ -2,32 +2,35 @@
 
 namespace Silo\StorageConnectors\Factories;
 
+use Silo\StorageConnectors\Connectors\ConfluenceConnector;
 use Silo\StorageConnectors\Connectors\GoogleDriveConnector;
 use Silo\StorageConnectors\Contracts\StorageConnectorInterface;
+use Silo\StorageConnectors\Enums\SiloConnector;
 use Silo\StorageConnectors\Exceptions\StorageException;
 
 class StorageConnectorFactory
 {
-    protected static array $customProviders = [];
+    public static array $customConnectors = [];
 
-    public static function registerProvider($providerName, $providerClass)
+    public static function registerConnector($connectorName, $connectorClass)
     {
-        self::$customProviders[$providerName] = $providerClass;
+        self::$customConnectors[$connectorName] = $connectorClass;
     }
 
     /**
      * @throws StorageException
      */
-    public static function create(string $providerType): StorageConnectorInterface
+    public static function connect(SiloConnector|string $connectorType): StorageConnectorInterface
     {
-        if (isset(self::$customProviders[$providerType])) {
-            return new self::$customProviders[$providerType]();
+        if (is_string($connectorType) && isset(self::$customConnectors[$connectorType])) {
+            return new self::$customConnectors[$connectorType]();
         }
 
         // Logic for built-in providers
-        return match ($providerType) {
-            'google_drive' => new GoogleDriveConnector(config('storageproviders.google_drive')),
-            default => throw new StorageException("Unsupported storage provider: {$providerType}"),
+        return match ($connectorType) {
+            SiloConnector::GOOGLE_DRIVE => new GoogleDriveConnector(),
+            SiloConnector::CONFLUENCE => new ConfluenceConnector(),
+            default => throw new StorageException("Unsupported storage provider: $connectorType"),
         };
     }
 }
