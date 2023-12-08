@@ -3,6 +3,8 @@
 namespace Silo\StorageConnectors;
 
 use Silo\StorageConnectors\Commands\StorageConnectorsCommand;
+use Silo\StorageConnectors\Enums\SiloConnector;
+use Silo\StorageConnectors\Factories\StorageConnectorFactory;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
@@ -21,5 +23,13 @@ class StorageConnectorsServiceProvider extends PackageServiceProvider
             ->hasViews()
             ->hasMigration('create_silo-storage-connectors_table')
             ->hasCommand(StorageConnectorsCommand::class);
+
+        $this->app->singleton(StorageConnectorFactory::class, function () {
+            return new StorageConnectorFactory();
+        });
+
+        $this->app->singleton('google_drive_silo', function () {
+            return StorageConnectorFactory::connect(SiloConnector::GOOGLE_DRIVE);
+        });
     }
 }
