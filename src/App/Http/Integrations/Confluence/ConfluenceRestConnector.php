@@ -7,14 +7,13 @@ use Saloon\Http\Connector;
 
 class ConfluenceRestConnector extends Connector
 {
-
     public function __construct(private readonly string $atlassianDomain)
     {
     }
 
     public function resolveBaseUrl(): string
     {
-        return $this->atlassianDomain . '/wiki/api/v2';
+        return $this->atlassianDomain.'/wiki/api/v2';
     }
 
     protected function defaultHeaders(): array

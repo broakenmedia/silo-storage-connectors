@@ -15,6 +15,6 @@ class GetPageRequest extends Request
 
     public function resolveEndpoint(): string
     {
-        return "/pages/" . $this->id . "?body-format=storage";
+        return '/pages/'.$this->id.'?body-format=storage';
     }
 }

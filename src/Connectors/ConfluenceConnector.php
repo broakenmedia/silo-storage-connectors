@@ -16,8 +16,8 @@ use Silo\StorageConnectors\Exceptions\StorageException;
 
 class ConfluenceConnector implements StorageConnectorInterface
 {
-
     private ConfluenceRestConnector $client;
+
     private Drive $service;
 
     public function __construct()

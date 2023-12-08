@@ -7,6 +7,6 @@ return [
     ],
     'confluence' => [
         'username' => env('CONFLUENCE_USERNAME'),
-        'api_token' => env('CONFLUENCE_API_TOKEN')
-    ]
+        'api_token' => env('CONFLUENCE_API_TOKEN'),
+    ],
 ];
