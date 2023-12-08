@@ -19,8 +19,8 @@ use Silo\StorageConnectors\Exceptions\StorageException;
 
 class GoogleDriveConnector implements StorageConnectorInterface
 {
-
     private Client $client;
+
     private Drive $service;
 
     private static array $exportMimeTypeMap = [
@@ -90,6 +90,7 @@ class GoogleDriveConnector implements StorageConnectorInterface
         foreach ($files->getFiles() as $file) {
             $response->push($this->get($file->getId(), $includeFileContent));
         }
+
         return $response;
     }
 
