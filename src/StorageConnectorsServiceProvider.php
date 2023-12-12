@@ -34,6 +34,7 @@ class StorageConnectorsServiceProvider extends PackageServiceProvider
             $client = new Client();
             $client->setAuthConfig(config('silo.google_drive.service_account'));
             $client->setScopes(Drive::DRIVE);
+
             return $client;
         });
 

@@ -3,7 +3,6 @@
 namespace Silo\StorageConnectors\Connectors;
 
 use Exception;
-use Google\Client;
 use Google\Service\Drive;
 use Google\Service\Drive\DriveFile;
 use Google\Service\Exception as GoogleServiceException;
