@@ -34,10 +34,12 @@ class ConfluenceRestConnector extends Connector implements HasPagination
 
     public function paginate(Request $request): CursorPaginator
     {
-        return new class(connector: $this, request: $request) extends CursorPaginator {
+        return new class(connector: $this, request: $request) extends CursorPaginator
+        {
             protected function getNextCursor(Response $response): int|string
             {
                 parse_str(parse_url($response->json('_links.next'))['query'], $params);
+
                 return $params['cursor'];
             }
 
