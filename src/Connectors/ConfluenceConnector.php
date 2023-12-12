@@ -36,7 +36,8 @@ class ConfluenceConnector implements StorageConnectorInterface
     }
 
     /**
-     * @param string $resourceId The confluence page ID
+     * @param  string  $resourceId The confluence page ID
+     *
      * @throws StorageException
      */
     public function get(string $resourceId, bool $includeFileContent = false): SiloFile

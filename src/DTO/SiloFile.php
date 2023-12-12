@@ -7,15 +7,14 @@ use Psr\Http\Message\StreamInterface;
 class SiloFile
 {
     public function __construct(
-        public string           $id,
-        public string           $name,
-        public ?string          $extension,
-        public string           $mimeType,
-        public ?string          $size,
+        public string $id,
+        public string $name,
+        public ?string $extension,
+        public string $mimeType,
+        public ?string $size,
         public ?StreamInterface $contentStream = null,
-        private readonly mixed  $nativeResponseObject = null
-    )
-    {
+        private readonly mixed $nativeResponseObject = null
+    ) {
     }
 
     /**
