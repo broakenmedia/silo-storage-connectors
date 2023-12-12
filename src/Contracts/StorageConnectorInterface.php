@@ -2,12 +2,15 @@
 
 namespace Silo\StorageConnectors\Contracts;
 
-use Illuminate\Support\Collection;
-use Silo\StorageConnectors\DTO\StorageResponse;
+use Illuminate\Support\Enumerable;
+use Silo\StorageConnectors\DTO\SiloFile;
 
 interface StorageConnectorInterface
 {
-    public function get(string $resourceId, bool $includeFileContent = false): StorageResponse;
+    public function get(string $resourceId, bool $includeFileContent = false): SiloFile;
 
-    public function list(?string $pageId = null, int $pageSize = 20, bool $includeFileContent = false, array $extraArgs = []): Collection;
+    /**
+     * @return Enumerable<SiloFile>
+     */
+    public function list(bool $includeFileContent = false, array $extraArgs = []): Enumerable;
 }

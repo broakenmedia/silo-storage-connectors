@@ -13,7 +13,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
 use RuntimeException;
 use Silo\StorageConnectors\Contracts\StorageConnectorInterface;
-use Silo\StorageConnectors\DTO\StorageResponse;
+use Silo\StorageConnectors\DTO\SiloFile;
 use Silo\StorageConnectors\Enums\SiloConnector;
 use Silo\StorageConnectors\Exceptions\StorageException;
 
@@ -44,12 +44,12 @@ class GoogleDriveConnector implements StorageConnectorInterface
     /**
      * @throws StorageException
      */
-    public function get(string $resourceId, bool $includeFileContent = false): StorageResponse
+    public function get(string $resourceId, bool $includeFileContent = false): SiloFile
     {
         try {
             $file = $this->service->files->get($resourceId, ['fields' => 'id,kind,name,mimeType,size,exportLinks,fileExtension,webViewLink']);
 
-            $response = new StorageResponse(
+            $response = new SiloFile(
                 $file->getId(),
                 $file->getName(),
                 $file->getFileExtension(),
@@ -73,12 +73,15 @@ class GoogleDriveConnector implements StorageConnectorInterface
         return $response;
     }
 
-    public function list(?string $pageId = null, int $pageSize = 20, bool $includeFileContent = false, array $extraArgs = []): Collection
+    /**
+     * @throws StorageException
+     */
+    public function list(bool $includeFileContent = false, array $extraArgs = []): Collection
     {
         $files = $this->service->files->listFiles(array_merge([
             'fields' => 'files(id, kind), nextPageToken',
-            'pageSize' => (string)$pageSize,
-            'pageToken' => $pageId,
+            'pageSize' => Arr::get($extraArgs, 'pageSize', 20),
+            'pageToken' => Arr::get($extraArgs, 'pageToken'),
             'supportsAllDrives' => true,
             'includeItemsFromAllDrives' => true,
             'q' => [
@@ -97,7 +100,7 @@ class GoogleDriveConnector implements StorageConnectorInterface
     /**
      * @throws StorageException
      */
-    private function hydrateContentStream(DriveFile $file, StorageResponse $response): void
+    private function hydrateContentStream(DriveFile $file, SiloFile $response): void
     {
         if ($file->getFileExtension() !== null) {
             try {

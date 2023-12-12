@@ -4,11 +4,11 @@ namespace Silo\StorageConnectors\Facades;
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Facade;
-use Silo\StorageConnectors\DTO\StorageResponse;
+use Silo\StorageConnectors\DTO\SiloFile;
 
 /**
- * @method static StorageResponse get(string $resourceId, bool $includeFileContent = false)
- * @method static Collection list(?string $pageId = null, int $pageSize = 20, bool $includeFileContent = false, array $extraArgs = [])
+ * @method static SiloFile get(string $fileId, bool $includeFileContent = false)
+ * @method static Collection<SiloFile> list(bool $includeFileContent = false, array $extraArgs = [])
  *
  * @see \Silo\StorageConnectors\Connectors\GoogleDriveConnector
  */

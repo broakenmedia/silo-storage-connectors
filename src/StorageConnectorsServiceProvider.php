@@ -31,5 +31,10 @@ class StorageConnectorsServiceProvider extends PackageServiceProvider
         $this->app->singleton('google_drive_silo', function () {
             return StorageConnectorFactory::connect(SiloConnector::GOOGLE_DRIVE);
         });
+
+        $this->app->singleton('confluence_silo', function () {
+            return StorageConnectorFactory::connect(SiloConnector::CONFLUENCE);
+        });
+
     }
 }
