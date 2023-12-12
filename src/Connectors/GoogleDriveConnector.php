@@ -19,8 +19,6 @@ use Silo\StorageConnectors\Exceptions\StorageException;
 
 class GoogleDriveConnector implements StorageConnectorInterface
 {
-    private Client $client;
-
     private Drive $service;
 
     private static array $exportMimeTypeMap = [
@@ -35,10 +33,7 @@ class GoogleDriveConnector implements StorageConnectorInterface
         if (config('silo.google_drive.service_account') === null) {
             throw new RuntimeException('silo.google_drive.service_account is not set');
         }
-        $this->client = new Client();
-        $this->client->setAuthConfig(config('silo.google_drive.service_account'));
-        $this->client->setScopes(Drive::DRIVE);
-        $this->service = new Drive($this->client);
+        $this->service = app(Drive::class);
     }
 
     /**

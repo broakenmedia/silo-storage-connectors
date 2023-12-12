@@ -2,6 +2,8 @@
 
 namespace Silo\StorageConnectors;
 
+use Google\Client;
+use Google\Service\Drive;
 use Silo\StorageConnectors\Commands\StorageConnectorsCommand;
 use Silo\StorageConnectors\Enums\SiloConnector;
 use Silo\StorageConnectors\Factories\StorageConnectorFactory;
@@ -26,6 +28,17 @@ class StorageConnectorsServiceProvider extends PackageServiceProvider
 
         $this->app->singleton(StorageConnectorFactory::class, function () {
             return new StorageConnectorFactory();
+        });
+
+        $this->app->bind(Client::class, function () {
+            $client = new Client();
+            $client->setAuthConfig(config('silo.google_drive.service_account'));
+            $client->setScopes(Drive::DRIVE);
+            return $client;
+        });
+
+        $this->app->bind(Drive::class, function () {
+            return new Drive(app(Client::class));
         });
 
         $this->app->singleton('google_drive_silo', function () {
