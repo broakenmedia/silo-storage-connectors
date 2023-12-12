@@ -4,8 +4,9 @@ namespace Silo\StorageConnectors\App\Http\Integrations\Confluence\Requests;
 
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
+use Saloon\PaginationPlugin\Contracts\Paginatable;
 
-class GetSpacePagesRequest extends Request
+class GetSpacePagesRequest extends Request implements Paginatable
 {
     protected Method $method = Method::GET;
 
@@ -15,6 +16,6 @@ class GetSpacePagesRequest extends Request
 
     public function resolveEndpoint(): string
     {
-        return "/spaces/$this->id/pages";
+        return "/spaces/$this->id/pages?body-format=storage";
     }
 }
