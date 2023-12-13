@@ -37,7 +37,7 @@ class ConfluenceConnector implements StorageConnectorInterface
     }
 
     /**
-     * @param string $resourceId The confluence page ID
+     * @param  string  $resourceId The confluence page ID
      *
      * @throws StorageException
      */

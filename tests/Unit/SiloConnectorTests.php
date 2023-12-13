@@ -136,7 +136,7 @@ it('can get file list without file content from Google Drive', function () {
     $rawnetProjectsFolder = '0B0V-HC-FCnqoNFpodlZxUmJZaEE';
     $files = GoogleDriveSilo::list(false, ['q' => [
         'trashed' => false,
-        "'$rawnetProjectsFolder' in parents"
+        "'$rawnetProjectsFolder' in parents",
     ], 'pageSize' => 5, 'pageToken' => null]);
 
     /** @var SiloFile $file */
@@ -157,21 +157,21 @@ it('can get single file from confluence', function () {
 
     $mockClient = new MockClient([
         MockResponse::make([
-            "parentType" => "page",
-            "id" => "58949677",
-            "title" => "Hubspot: Lifecycles",
-            "status" => "current",
-            "body" => [
-                "storage" => [
-                    "value" => "This is the page content",
-                    "representation" => "storage",
-                ]
+            'parentType' => 'page',
+            'id' => '58949677',
+            'title' => 'Hubspot: Lifecycles',
+            'status' => 'current',
+            'body' => [
+                'storage' => [
+                    'value' => 'This is the page content',
+                    'representation' => 'storage',
+                ],
             ],
-            "spaceId" => "59179012",
-            "_links" => [
-                "editui" => "",
-                "webui" => "",
-                "tinyui" => "",
+            'spaceId' => '59179012',
+            '_links' => [
+                'editui' => '',
+                'webui' => '',
+                'tinyui' => '',
             ],
         ]),
     ]);
@@ -194,34 +194,34 @@ it('can get file list without file content from confluence', function () {
     $mockClient = new MockClient([
         MockResponse::make([
             'results' => [[
-                "id" => "58949677",
-                "title" => "Mock Page 1",
-                "body" => [
-                    "storage" => [
-                        "value" => "This is the page content",
-                        "representation" => "storage",
-                    ]
+                'id' => '58949677',
+                'title' => 'Mock Page 1',
+                'body' => [
+                    'storage' => [
+                        'value' => 'This is the page content',
+                        'representation' => 'storage',
+                    ],
                 ],
-                "spaceId" => "59179012"
+                'spaceId' => '59179012',
             ]],
-            "_links" => [
-                "next" => "/wiki/api/v2/spaces/59179012/pages?body-format=storage&cursor=cursorId",
+            '_links' => [
+                'next' => '/wiki/api/v2/spaces/59179012/pages?body-format=storage&cursor=cursorId',
             ],
         ]),
         MockResponse::make([
             'results' => [[
-                "id" => "589496775",
-                "title" => "Mock Page 2",
-                "body" => [
-                    "storage" => [
-                        "value" => "This is the page content",
-                        "representation" => "storage",
-                    ]
+                'id' => '589496775',
+                'title' => 'Mock Page 2',
+                'body' => [
+                    'storage' => [
+                        'value' => 'This is the page content',
+                        'representation' => 'storage',
+                    ],
                 ],
-                "spaceId" => "59179012"
+                'spaceId' => '59179012',
             ]],
-            "_links" => [],
-        ])
+            '_links' => [],
+        ]),
     ]);
 
     ConfluenceSilo::setMockClient($mockClient);
@@ -245,34 +245,34 @@ it('can get file list with file content from confluence', function () {
     $mockClient = new MockClient([
         MockResponse::make([
             'results' => [[
-                "id" => "58949677",
-                "title" => "Mock Page 1",
-                "body" => [
-                    "storage" => [
-                        "value" => "This is the page content",
-                        "representation" => "storage",
-                    ]
+                'id' => '58949677',
+                'title' => 'Mock Page 1',
+                'body' => [
+                    'storage' => [
+                        'value' => 'This is the page content',
+                        'representation' => 'storage',
+                    ],
                 ],
-                "spaceId" => "59179012"
+                'spaceId' => '59179012',
             ]],
-            "_links" => [
-                "next" => "/wiki/api/v2/spaces/59179012/pages?body-format=storage&cursor=cursorId",
+            '_links' => [
+                'next' => '/wiki/api/v2/spaces/59179012/pages?body-format=storage&cursor=cursorId',
             ],
         ]),
         MockResponse::make([
             'results' => [[
-                "id" => "589496775",
-                "title" => "Mock Page 2",
-                "body" => [
-                    "storage" => [
-                        "value" => "This is the page content",
-                        "representation" => "storage",
-                    ]
+                'id' => '589496775',
+                'title' => 'Mock Page 2',
+                'body' => [
+                    'storage' => [
+                        'value' => 'This is the page content',
+                        'representation' => 'storage',
+                    ],
                 ],
-                "spaceId" => "59179012"
+                'spaceId' => '59179012',
             ]],
-            "_links" => [],
-        ])
+            '_links' => [],
+        ]),
     ]);
 
     ConfluenceSilo::setMockClient($mockClient);
