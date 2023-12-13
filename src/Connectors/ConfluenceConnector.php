@@ -6,6 +6,7 @@ use Exception;
 use GuzzleHttp\Psr7;
 use Illuminate\Support\Enumerable;
 use RuntimeException;
+use Saloon\Http\Faking\MockClient;
 use Silo\StorageConnectors\App\Http\Integrations\Confluence\ConfluenceRestConnector;
 use Silo\StorageConnectors\App\Http\Integrations\Confluence\Requests\GetPageRequest;
 use Silo\StorageConnectors\App\Http\Integrations\Confluence\Requests\GetSpacePagesRequest;
@@ -36,7 +37,7 @@ class ConfluenceConnector implements StorageConnectorInterface
     }
 
     /**
-     * @param  string  $resourceId The confluence page ID
+     * @param string $resourceId The confluence page ID
      *
      * @throws StorageException
      */
@@ -85,5 +86,10 @@ class ConfluenceConnector implements StorageConnectorInterface
         } catch (Exception $e) {
             throw new StorageException($e->getMessage(), SiloConnector::CONFLUENCE, $e->getCode(), $e);
         }
+    }
+
+    public function setMockClient(MockClient $mockClient): void
+    {
+        $this->client->withMockClient($mockClient);
     }
 }

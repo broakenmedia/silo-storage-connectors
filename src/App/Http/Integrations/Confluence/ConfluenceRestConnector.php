@@ -39,7 +39,6 @@ class ConfluenceRestConnector extends Connector implements HasPagination
             protected function getNextCursor(Response $response): int|string
             {
                 parse_str(parse_url($response->json('_links.next'))['query'], $params);
-
                 return $params['cursor'];
             }
 
