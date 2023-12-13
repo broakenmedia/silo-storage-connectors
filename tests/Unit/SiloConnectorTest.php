@@ -131,10 +131,10 @@ it('can get file list without file content from Google Drive', function () {
     $this->app->instance(Drive::class, $driveServiceMock);
 
     $rawnetProjectsFolder = '0B0V-HC-FCnqoNFpodlZxUmJZaEE';
-    $files = GoogleDriveSilo::list(false, ['q' => [
+    $files = GoogleDriveSilo::list(['q' => [
         'trashed' => false,
         "'$rawnetProjectsFolder' in parents",
-    ], 'pageSize' => 5, 'pageToken' => null]);
+    ], 'pageSize' => 5, 'pageToken' => null], false);
 
     /** @var SiloFile $file */
     $file = $files->first();
@@ -143,6 +143,38 @@ it('can get file list without file content from Google Drive', function () {
         ->not()->toBeEmpty()
         ->and($file)->toBeInstanceOf(SiloFile::class)
         ->and($file->id)->toBe($mockFileID)
+        ->and($file->contentStream())->toBeNull();
+});
+
+it('can get single file without content from confluence', function () {
+
+    Config::set('silo.confluence.api_token', '');
+    Config::set('silo.confluence.domain', '');
+    Config::set('silo.confluence.username', '');
+
+    $mockClient = new MockClient([
+        MockResponse::make([
+            'parentType' => 'page',
+            'id' => '58949677',
+            'title' => 'Hubspot: Lifecycles',
+            'status' => 'current',
+            'body' => [],
+            'spaceId' => '59179012',
+            '_links' => [
+                'editui' => '',
+                'webui' => '',
+                'tinyui' => '',
+            ],
+        ]),
+    ]);
+
+    ConfluenceSilo::setMockClient($mockClient);
+
+    $pageId = '58949677';
+
+    $file = ConfluenceSilo::get($pageId);
+    expect($file->id)->toBe($pageId)
+        ->and($file)->toBeInstanceOf(SiloFile::class)
         ->and($file->contentStream())->toBeNull();
 });
 
@@ -179,7 +211,8 @@ it('can get single file from confluence', function () {
 
     $file = ConfluenceSilo::get($pageId, true);
     expect($file->id)->toBe($pageId)
-        ->and($file)->toBeInstanceOf(SiloFile::class);
+        ->and($file)->toBeInstanceOf(SiloFile::class)
+        ->and($file->contentStream())->not()->toBeNull();
 });
 
 it('can get file list without file content from confluence', function () {
@@ -193,12 +226,7 @@ it('can get file list without file content from confluence', function () {
             'results' => [[
                 'id' => '58949677',
                 'title' => 'Mock Page 1',
-                'body' => [
-                    'storage' => [
-                        'value' => 'This is the page content',
-                        'representation' => 'storage',
-                    ],
-                ],
+                'body' => [],
                 'spaceId' => '59179012',
             ]],
             '_links' => [
@@ -226,7 +254,7 @@ it('can get file list without file content from confluence', function () {
     $pageId = '58949677';
     $spaceId = '59179012';
 
-    $files = ConfluenceSilo::list(false, [], $spaceId);
+    $files = ConfluenceSilo::list([], false, $spaceId);
     $items = $files->all();
     expect($items[0]->id)->toBe($pageId)
         ->and($items[0]->contentStream())->toBeNull()
@@ -277,7 +305,7 @@ it('can get file list with file content from confluence', function () {
     $pageId = '58949677';
     $spaceId = '59179012';
 
-    $files = ConfluenceSilo::list(true, [], $spaceId);
+    $files = ConfluenceSilo::list([], true, $spaceId);
     $items = $files->all();
     expect($items[0]->id)->toBe($pageId)
         ->and($items[0]->contentStream())->not->toBeNull()

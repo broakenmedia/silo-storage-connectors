@@ -70,7 +70,7 @@ class GoogleDriveConnector implements StorageConnectorInterface
     /**
      * @throws StorageException
      */
-    public function list(bool $includeFileContent = false, array $extraArgs = []): Collection
+    public function list(array $extraArgs = [], bool $includeFileContent = false): Collection
     {
         $files = $this->service->files->listFiles(array_merge([
             'fields' => 'files(id, kind), nextPageToken',

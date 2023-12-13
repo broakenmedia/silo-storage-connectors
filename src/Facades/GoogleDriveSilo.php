@@ -8,7 +8,7 @@ use Silo\StorageConnectors\DTO\SiloFile;
 
 /**
  * @method static SiloFile get(string $fileId, bool $includeFileContent = false)
- * @method static Collection<SiloFile> list(bool $includeFileContent = false, array $extraArgs = [])
+ * @method static Collection<SiloFile> list(array $extraArgs = [], bool $includeFileContent = false)
  *
  * @see \Silo\StorageConnectors\Connectors\GoogleDriveConnector
  */
