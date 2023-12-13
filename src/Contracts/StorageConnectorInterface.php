@@ -12,5 +12,5 @@ interface StorageConnectorInterface
     /**
      * @return Enumerable<SiloFile>
      */
-    public function list(bool $includeFileContent = false, array $extraArgs = []): Enumerable;
+    public function list(array $extraArgs = [], bool $includeFileContent = false): Enumerable;
 }

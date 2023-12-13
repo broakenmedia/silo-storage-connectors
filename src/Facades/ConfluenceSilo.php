@@ -9,7 +9,7 @@ use Silo\StorageConnectors\DTO\SiloFile;
 
 /**
  * @method static SiloFile get(string $confluencePageId, bool $includeFileContent = false)
- * @method static LazyCollection<SiloFile> list(bool $includeFileContent = false, array $extraArgs = [], ?string $spaceId = null)
+ * @method static LazyCollection<SiloFile> list(array $extraArgs = [], bool $includeFileContent = false, ?string $spaceId = null)
  * @method static void setMockClient(MockClient $mockClient)
  *
  * @see \Silo\StorageConnectors\Connectors\ConfluenceConnector

@@ -44,7 +44,7 @@ class ConfluenceConnector implements StorageConnectorInterface
     public function get(string $resourceId, bool $includeFileContent = false): SiloFile
     {
         try {
-            $r = $this->client->send(new GetPageRequest($resourceId));
+            $r = $this->client->send(new GetPageRequest($resourceId, $includeFileContent));
             $file = $r->json();
 
             return new SiloFile(
@@ -52,7 +52,7 @@ class ConfluenceConnector implements StorageConnectorInterface
                 $file['title'],
                 'html',
                 'text/html',
-                strlen($file['body']['storage']['value']),
+                $includeFileContent ? strlen($file['body']['storage']['value']) : 0,
                 $includeFileContent ? Psr7\Utils::streamFor($file['body']['storage']['value']) : null,
                 $file
             );
@@ -64,14 +64,17 @@ class ConfluenceConnector implements StorageConnectorInterface
     /**
      * @throws StorageException
      */
-    public function list(bool $includeFileContent = false, array $extraArgs = [], ?string $spaceId = null): Enumerable
+    public function list(array $extraArgs = [], bool $includeFileContent = false, ?string $spaceId = null): Enumerable
     {
         if ($spaceId === null) {
             throw new RuntimeException('Confluence List requires a spaceId');
         }
 
         try {
-            $r = $this->client->paginate(new GetSpacePagesRequest($spaceId));
+            if(!$includeFileContent){
+                $extraArgs['body-format'] = null;
+            }
+            $r = $this->client->paginate(new GetSpacePagesRequest($spaceId, $extraArgs));
 
             return $r->collect()->map(function (array $file) use ($includeFileContent) {
                 return new SiloFile(
@@ -79,7 +82,7 @@ class ConfluenceConnector implements StorageConnectorInterface
                     $file['title'],
                     'html',
                     'text/html',
-                    strlen($file['body']['storage']['value']),
+                    $includeFileContent ? strlen($file['body']['storage']['value']) : 0,
                     $includeFileContent ? Psr7\Utils::streamFor($file['body']['storage']['value']) : null,
                     $file);
             });
