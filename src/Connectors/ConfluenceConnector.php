@@ -71,7 +71,7 @@ class ConfluenceConnector implements StorageConnectorInterface
         }
 
         try {
-            if(!$includeFileContent){
+            if (! $includeFileContent) {
                 $extraArgs['body-format'] = null;
             }
             $r = $this->client->paginate(new GetSpacePagesRequest($spaceId, $extraArgs));
