@@ -1,14 +1,11 @@
 <?php
 
-namespace Silo\StorageConnectors\Tests\Unit;
-
 use Google\Client;
 use Google\Service\Drive;
 use Google\Service\Drive\DriveFile;
 use Google\Service\Drive\FileList;
 use GuzzleHttp\Psr7;
 use Illuminate\Support\Facades\Config;
-use Mockery;
 use Saloon\Config as SaloonConfig;
 use Saloon\Http\Faking\MockClient;
 use Saloon\Http\Faking\MockResponse;
