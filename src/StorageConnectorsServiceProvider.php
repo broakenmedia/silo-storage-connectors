@@ -22,8 +22,6 @@ class StorageConnectorsServiceProvider extends PackageServiceProvider
         $package
             ->name('silo-storage-connectors')
             ->hasConfigFile('silo')
-            ->hasViews()
-            ->hasMigration('create_silo-storage-connectors_table')
             ->hasCommand(StorageConnectorsCommand::class);
 
         $this->app->singleton(StorageConnectorFactory::class, function () {
