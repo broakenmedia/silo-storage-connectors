@@ -9,6 +9,7 @@ use Silo\StorageConnectors\DTO\SiloFile;
 /**
  * @method static SiloFile get(string $fileId, bool $includeFileContent = false)
  * @method static LazyCollection<SiloFile> list(array $extraArgs = [], bool $includeFileContent = false)
+ * @method static void setExportMimeTypeMap(array $customMap)
  *
  * @see \Silo\StorageConnectors\Connectors\GoogleDriveConnector
  */
