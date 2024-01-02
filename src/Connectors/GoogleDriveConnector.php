@@ -8,8 +8,9 @@ use Google\Service\Drive\DriveFile;
 use Google\Service\Exception as GoogleServiceException;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Collection;
+use Illuminate\Support\Enumerable;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\LazyCollection;
 use RuntimeException;
 use Silo\StorageConnectors\Contracts\StorageConnectorInterface;
 use Silo\StorageConnectors\DTO\SiloFile;
@@ -67,28 +68,33 @@ class GoogleDriveConnector implements StorageConnectorInterface
         return $response;
     }
 
-    /**
-     * @throws StorageException
-     */
-    public function list(array $extraArgs = [], bool $includeFileContent = false): Collection
+    private function listFiles(array $extraArgs = []): Drive\FileList
     {
-        $files = $this->service->files->listFiles(array_merge([
+        return $this->service->files->listFiles(array_merge([
             'fields' => 'files(id, kind), nextPageToken',
             'pageSize' => Arr::get($extraArgs, 'pageSize', 20),
             'pageToken' => Arr::get($extraArgs, 'pageToken'),
             'supportsAllDrives' => true,
             'includeItemsFromAllDrives' => true,
-            'q' => [
-                'trashed' => false,
-            ],
         ], $extraArgs));
+    }
 
-        $response = collect();
-        foreach ($files->getFiles() as $file) {
-            $response->push($this->get($file->getId(), $includeFileContent));
-        }
-
-        return $response;
+    /**
+     * @throws StorageException
+     */
+    public function list(array $extraArgs = [], bool $includeFileContent = false): Enumerable
+    {
+        return LazyCollection::make(function () use ($includeFileContent, $extraArgs) {
+            $pageToken = null;
+            do {
+                $extraArgs['pageToken'] = $pageToken;
+                $data = $this->listFiles($extraArgs);
+                foreach ($data as $file) {
+                    yield $this->get($file->getId(), $includeFileContent);
+                }
+                $pageToken = $data->getNextPageToken();
+            } while ($pageToken !== null);
+        });
     }
 
     /**
@@ -132,7 +138,7 @@ class GoogleDriveConnector implements StorageConnectorInterface
      *
      * If you add a mapping that google do not support it will log an error and the content stream will remain empty.
      *
-     * @param  array  $customMap Custom MIME type map provided by the user.
+     * @param array $customMap Custom MIME type map provided by the user.
      */
     public function setExportMimeTypeMap(array $customMap): void
     {

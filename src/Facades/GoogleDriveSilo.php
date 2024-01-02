@@ -2,13 +2,13 @@
 
 namespace Silo\StorageConnectors\Facades;
 
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Facade;
+use Illuminate\Support\LazyCollection;
 use Silo\StorageConnectors\DTO\SiloFile;
 
 /**
  * @method static SiloFile get(string $fileId, bool $includeFileContent = false)
- * @method static Collection<SiloFile> list(array $extraArgs = [], bool $includeFileContent = false)
+ * @method static LazyCollection<SiloFile> list(array $extraArgs = [], bool $includeFileContent = false)
  *
  * @see \Silo\StorageConnectors\Connectors\GoogleDriveConnector
  */
