@@ -70,7 +70,7 @@ class SlackConnector implements StorageConnectorInterface
 
             return $r->collect()->map(function (array $file) use ($includeFileContent) {
                 $fileContentRequest = null;
-                if(Arr::get($file, 'url_private_download') !== null) {
+                if (Arr::get($file, 'url_private_download') !== null) {
                     $fileContentRequest = new DownloadFileRequest(Arr::get($file, 'url_private_download'));
                 }
 
