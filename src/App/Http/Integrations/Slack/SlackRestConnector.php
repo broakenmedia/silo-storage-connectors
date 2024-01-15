@@ -38,12 +38,12 @@ class SlackRestConnector extends Connector implements HasPagination
         {
             protected function isLastPage(Response $response): bool
             {
-                return $response->json('paging.pages') === $response->json('paging.page');
+                return $response->json('paging.page') >= $response->json('paging.pages');
             }
 
             protected function getPageItems(Response $response, Request $request): array
             {
-                return $response->json('files');
+                return $response->json('files', []);
             }
 
             protected function applyPagination(Request $request): Request

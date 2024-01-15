@@ -69,7 +69,10 @@ class SlackConnector implements StorageConnectorInterface
             $r = $this->client->paginate(new ListFilesRequest($channelId, $extraArgs));
 
             return $r->collect()->map(function (array $file) use ($includeFileContent) {
-                $fileContentRequest = new DownloadFileRequest(Arr::get($file, 'url_private_download'));
+                $fileContentRequest = null;
+                if(Arr::get($file, 'url_private_download') !== null) {
+                    $fileContentRequest = new DownloadFileRequest(Arr::get($file, 'url_private_download'));
+                }
 
                 return new SiloFile(
                     Arr::get($file, 'id'),
@@ -77,7 +80,7 @@ class SlackConnector implements StorageConnectorInterface
                     pathinfo(Arr::get($file, 'name'), PATHINFO_EXTENSION),
                     Arr::get($file, 'mimetype'),
                     $includeFileContent ? Arr::get($file, 'size') : null,
-                    $includeFileContent ? $this->client->send($fileContentRequest)->stream() : null,
+                    $includeFileContent && $fileContentRequest !== null ? $this->client->send($fileContentRequest)->stream() : null,
                     $file);
             });
         } catch (Exception $e) {
