@@ -318,14 +318,14 @@ it('can get single file from slack', function () {
 
     $mockClient = new MockClient([
         MockResponse::make([
-            "ok" => true,
-            "file" => [
-                "id" => "FAKEFILEID",
-                "name" => "text.txt",
-                "title" => "text.txt",
-                "mimetype" => "text/plain",
-                "size" => 144538,
-                "url_private_download" => "https://test.com/download/text.txt"
+            'ok' => true,
+            'file' => [
+                'id' => 'FAKEFILEID',
+                'name' => 'text.txt',
+                'title' => 'text.txt',
+                'mimetype' => 'text/plain',
+                'size' => 144538,
+                'url_private_download' => 'https://test.com/download/text.txt',
             ],
         ]),
         /* File Download Mock */
@@ -347,14 +347,14 @@ it('can get single file without content from slack', function () {
 
     $mockClient = new MockClient([
         MockResponse::make([
-            "ok" => true,
-            "file" => [
-                "id" => "FAKEFILEID",
-                "name" => "text.txt",
-                "title" => "text.txt",
-                "mimetype" => "text/plain",
-                "size" => 144538,
-                "url_private_download" => "https://test.com/download/text.txt"
+            'ok' => true,
+            'file' => [
+                'id' => 'FAKEFILEID',
+                'name' => 'text.txt',
+                'title' => 'text.txt',
+                'mimetype' => 'text/plain',
+                'size' => 144538,
+                'url_private_download' => 'https://test.com/download/text.txt',
             ],
         ]),
     ]);
@@ -374,30 +374,30 @@ it('can get file list without file content from slack', function () {
 
     $mockClient = new MockClient([
         MockResponse::make([
-            "ok" => true,
-            "files" => [
+            'ok' => true,
+            'files' => [
                 [
-                    "id" => "FAKEFILEID",
-                    "name" => "text.txt",
-                    "title" => "text.txt",
-                    "mimetype" => "text/plain",
-                    "size" => 144538,
-                    "url_private_download" => "https://test.com/download/text.txt"
+                    'id' => 'FAKEFILEID',
+                    'name' => 'text.txt',
+                    'title' => 'text.txt',
+                    'mimetype' => 'text/plain',
+                    'size' => 144538,
+                    'url_private_download' => 'https://test.com/download/text.txt',
                 ],
                 [
-                    "id" => "FAKEFILEID2",
-                    "name" => "text2.txt",
-                    "title" => "text2.txt",
-                    "mimetype" => "text/plain",
-                    "size" => 144538,
-                    "url_private_download" => "https://test.com/download/text2.txt"
+                    'id' => 'FAKEFILEID2',
+                    'name' => 'text2.txt',
+                    'title' => 'text2.txt',
+                    'mimetype' => 'text/plain',
+                    'size' => 144538,
+                    'url_private_download' => 'https://test.com/download/text2.txt',
                 ]],
-            "paging" => [[
-                "count" => 100,
-                "total" => 2,
-                "page" => 1,
-                "pages" => 1
-            ]]
+            'paging' => [[
+                'count' => 100,
+                'total' => 2,
+                'page' => 1,
+                'pages' => 1,
+            ]],
         ]),
     ]);
 
@@ -418,34 +418,34 @@ it('can get file list with file content from slack', function () {
 
     $mockClient = new MockClient([
         MockResponse::make([
-            "ok" => true,
-            "files" => [
+            'ok' => true,
+            'files' => [
                 [
-                    "id" => "FAKEFILEID",
-                    "name" => "text.txt",
-                    "title" => "text.txt",
-                    "mimetype" => "text/plain",
-                    "size" => 144538,
-                    "url_private_download" => "https://test.com/download/text.txt"
+                    'id' => 'FAKEFILEID',
+                    'name' => 'text.txt',
+                    'title' => 'text.txt',
+                    'mimetype' => 'text/plain',
+                    'size' => 144538,
+                    'url_private_download' => 'https://test.com/download/text.txt',
                 ],
                 [
-                    "id" => "FAKEFILEID2",
-                    "name" => "text2.txt",
-                    "title" => "text2.txt",
-                    "mimetype" => "text/plain",
-                    "size" => 144538,
-                    "url_private_download" => "https://test.com/download/text2.txt"
+                    'id' => 'FAKEFILEID2',
+                    'name' => 'text2.txt',
+                    'title' => 'text2.txt',
+                    'mimetype' => 'text/plain',
+                    'size' => 144538,
+                    'url_private_download' => 'https://test.com/download/text2.txt',
                 ]],
-            "paging" => [[
-                "count" => 100,
-                "total" => 2,
-                "page" => 1,
-                "pages" => 1
-            ]]
+            'paging' => [[
+                'count' => 100,
+                'total' => 2,
+                'page' => 1,
+                'pages' => 1,
+            ]],
         ]),
         /* File Download Mocks */
         MockResponse::make(),
-        MockResponse::make()
+        MockResponse::make(),
     ]);
 
     SlackSilo::setMockClient($mockClient);
@@ -458,4 +458,3 @@ it('can get file list with file content from slack', function () {
         ->and($files[0]->contentStream())->not()->toBeNull()
         ->and($files)->toHaveCount(2);
 });
-
