@@ -30,7 +30,7 @@ class SlackConnector implements StorageConnectorInterface
     }
 
     /**
-     * @param string $resourceId The slack file ID
+     * @param  string  $resourceId The slack file ID
      *
      * @throws StorageException
      */
@@ -70,6 +70,7 @@ class SlackConnector implements StorageConnectorInterface
 
             return $r->collect()->map(function (array $file) use ($includeFileContent) {
                 $fileContentRequest = new DownloadFileRequest(Arr::get($file, 'url_private_download'));
+
                 return new SiloFile(
                     Arr::get($file, 'id'),
                     Arr::get($file, 'title'),
