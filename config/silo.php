@@ -10,4 +10,7 @@ return [
         'api_token' => env('CONFLUENCE_API_TOKEN'),
         'domain' => env('CONFLUENCE_DOMAIN'),
     ],
+    'slack' => [
+        'api_token' => env('SLACK_API_TOKEN'),
+    ],
 ];

@@ -11,7 +11,7 @@ class SiloFile
         public string $name,
         public ?string $extension,
         public string $mimeType,
-        public ?string $size,
+        public ?string $size = null,
         public ?StreamInterface $contentStream = null,
         private readonly mixed $nativeResponseObject = null
     ) {

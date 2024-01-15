@@ -4,6 +4,7 @@ namespace Silo\StorageConnectors\Factories;
 
 use Silo\StorageConnectors\Connectors\ConfluenceConnector;
 use Silo\StorageConnectors\Connectors\GoogleDriveConnector;
+use Silo\StorageConnectors\Connectors\SlackConnector;
 use Silo\StorageConnectors\Contracts\StorageConnectorInterface;
 use Silo\StorageConnectors\Enums\SiloConnector;
 use Silo\StorageConnectors\Exceptions\StorageException;
@@ -30,6 +31,7 @@ class StorageConnectorFactory
         return match ($connectorType) {
             SiloConnector::GOOGLE_DRIVE => new GoogleDriveConnector(),
             SiloConnector::CONFLUENCE => new ConfluenceConnector(),
+            SiloConnector::SLACK => new SlackConnector(),
             default => throw new StorageException("Unsupported storage provider: $connectorType"),
         };
     }
