@@ -15,7 +15,7 @@ class GetFileRequest extends Request
 
     public function resolveEndpoint(): string
     {
-        return "/files.info";
+        return '/files.info';
     }
 
     protected function defaultQuery(): array

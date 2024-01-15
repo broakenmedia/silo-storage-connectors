@@ -16,7 +16,7 @@ class ListFilesRequest extends Request implements Paginatable
 
     public function resolveEndpoint(): string
     {
-        return "/files.list";
+        return '/files.list';
     }
 
     protected function defaultQuery(): array
