@@ -12,6 +12,7 @@ use Saloon\Http\Faking\MockResponse;
 use Silo\StorageConnectors\DTO\SiloFile;
 use Silo\StorageConnectors\Facades\ConfluenceSilo;
 use Silo\StorageConnectors\Facades\GoogleDriveSilo;
+use Silo\StorageConnectors\Facades\SlackSilo;
 
 beforeEach(function () {
     SaloonConfig::preventStrayRequests();
@@ -311,3 +312,150 @@ it('can get file list with file content from confluence', function () {
         ->and($items[0]->contentStream())->not->toBeNull()
         ->and($items)->toHaveCount(2);
 });
+
+it('can get single file from slack', function () {
+    Config::set('silo.slack.api_token', '');
+
+    $mockClient = new MockClient([
+        MockResponse::make([
+            "ok" => true,
+            "file" => [
+                "id" => "FAKEFILEID",
+                "name" => "text.txt",
+                "title" => "text.txt",
+                "mimetype" => "text/plain",
+                "size" => 144538,
+                "url_private_download" => "https://test.com/download/text.txt"
+            ],
+        ]),
+        /* File Download Mock */
+        MockResponse::make(),
+    ]);
+
+    SlackSilo::setMockClient($mockClient);
+
+    $fileId = 'FAKEFILEID';
+
+    $file = SlackSilo::get($fileId, true);
+    expect($file->id)->toBe($fileId)
+        ->and($file)->toBeInstanceOf(SiloFile::class)
+        ->and($file->contentStream())->not()->toBeNull();
+});
+
+it('can get single file without content from slack', function () {
+    Config::set('silo.slack.api_token', '');
+
+    $mockClient = new MockClient([
+        MockResponse::make([
+            "ok" => true,
+            "file" => [
+                "id" => "FAKEFILEID",
+                "name" => "text.txt",
+                "title" => "text.txt",
+                "mimetype" => "text/plain",
+                "size" => 144538,
+                "url_private_download" => "https://test.com/download/text.txt"
+            ],
+        ]),
+    ]);
+
+    SlackSilo::setMockClient($mockClient);
+
+    $fileId = 'FAKEFILEID';
+
+    $file = SlackSilo::get($fileId);
+    expect($file->id)->toBe($fileId)
+        ->and($file)->toBeInstanceOf(SiloFile::class)
+        ->and($file->contentStream())->toBeNull();
+});
+
+it('can get file list without file content from slack', function () {
+    Config::set('silo.slack.api_token', '');
+
+    $mockClient = new MockClient([
+        MockResponse::make([
+            "ok" => true,
+            "files" => [
+                [
+                    "id" => "FAKEFILEID",
+                    "name" => "text.txt",
+                    "title" => "text.txt",
+                    "mimetype" => "text/plain",
+                    "size" => 144538,
+                    "url_private_download" => "https://test.com/download/text.txt"
+                ],
+                [
+                    "id" => "FAKEFILEID2",
+                    "name" => "text2.txt",
+                    "title" => "text2.txt",
+                    "mimetype" => "text/plain",
+                    "size" => 144538,
+                    "url_private_download" => "https://test.com/download/text2.txt"
+                ]],
+            "paging" => [[
+                "count" => 100,
+                "total" => 2,
+                "page" => 1,
+                "pages" => 1
+            ]]
+        ]),
+    ]);
+
+    SlackSilo::setMockClient($mockClient);
+
+    $channelId = 'FAKECHANNELID';
+
+    $files = SlackSilo::list([], false, $channelId)->all();
+
+    expect($files[0]->id)->toBe('FAKEFILEID')
+        ->and($files[0]->contentStream())->toBeNull()
+        ->and($files)->toHaveCount(2);
+});
+
+it('can get file list with file content from slack', function () {
+
+    Config::set('silo.slack.api_token', '');
+
+    $mockClient = new MockClient([
+        MockResponse::make([
+            "ok" => true,
+            "files" => [
+                [
+                    "id" => "FAKEFILEID",
+                    "name" => "text.txt",
+                    "title" => "text.txt",
+                    "mimetype" => "text/plain",
+                    "size" => 144538,
+                    "url_private_download" => "https://test.com/download/text.txt"
+                ],
+                [
+                    "id" => "FAKEFILEID2",
+                    "name" => "text2.txt",
+                    "title" => "text2.txt",
+                    "mimetype" => "text/plain",
+                    "size" => 144538,
+                    "url_private_download" => "https://test.com/download/text2.txt"
+                ]],
+            "paging" => [[
+                "count" => 100,
+                "total" => 2,
+                "page" => 1,
+                "pages" => 1
+            ]]
+        ]),
+        /* File Download Mocks */
+        MockResponse::make(),
+        MockResponse::make()
+    ]);
+
+    SlackSilo::setMockClient($mockClient);
+
+    $channelId = 'FAKECHANNELID';
+
+    $files = SlackSilo::list([], true, $channelId)->all();
+
+    expect($files[0]->id)->toBe('FAKEFILEID')
+        ->and($files[0]->contentStream())->not()->toBeNull()
+        ->and($files)->toHaveCount(2);
+});
+
