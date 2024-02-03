@@ -12,10 +12,10 @@ class StorageException extends \Exception
     /**
      * Constructor for StorageException.
      *
-     * @param  string  $message The Exception message.
-     * @param  ?SiloConnector  $connectorType The type of storage connector related to the exception.
-     * @param  int  $code The Exception code.
-     * @param  Throwable|null  $previous The previous throwable used for exception chaining.
+     * @param  string  $message  The Exception message.
+     * @param  ?SiloConnector  $connectorType  The type of storage connector related to the exception.
+     * @param  int  $code  The Exception code.
+     * @param  Throwable|null  $previous  The previous throwable used for exception chaining.
      */
     public function __construct(string $message, ?SiloConnector $connectorType = null, int $code = 0, ?Throwable $previous = null)
     {

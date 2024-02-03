@@ -30,7 +30,7 @@ class SlackConnector implements StorageConnectorInterface
     }
 
     /**
-     * @param  string  $resourceId The slack file ID
+     * @param  string  $resourceId  The slack file ID
      *
      * @throws StorageException
      */

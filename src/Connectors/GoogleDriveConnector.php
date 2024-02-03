@@ -138,7 +138,7 @@ class GoogleDriveConnector implements StorageConnectorInterface
      *
      * If you add a mapping that google do not support it will log an error and the content stream will remain empty.
      *
-     * @param  array  $customMap Custom MIME type map provided by the user.
+     * @param  array  $customMap  Custom MIME type map provided by the user.
      */
     public function setExportMimeTypeMap(array $customMap): void
     {
