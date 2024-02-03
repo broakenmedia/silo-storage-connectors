@@ -1,6 +1,6 @@
 # Silo: Modular Storage Connectors
 
-### Transparently access different storage providers with a unified interface.
+### Laravel Package for transparently accessing different storage providers with a unified interface.
 
 Currently, supports:
 
